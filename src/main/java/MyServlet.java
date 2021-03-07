@@ -13,27 +13,23 @@ public class MyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Item item = null;
-        try {
-            item = itemDAO.findById(new Long(req.getParameter("param")));
-        } catch (NumberFormatException e) {
-            resp.getWriter().println("Wrong format");
-        }
 
-        resp.getWriter().println(item);
+        resp.getWriter().println(itemDAO.findById(itemDAO.convertStringIdToLong(req, resp)));
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long id = null;
-        try {
-            id = new Long(req.getParameter("id"));
-        } catch (NumberFormatException e) {
-            resp.getWriter().println("Wrong format");
-        }
+
+//        String strReq = req.getParameter("id");
+//        Long id = null;
+//        try {
+//            id = new Long(req.getParameter("id"));
+//        } catch (NumberFormatException e) {
+//            resp.getWriter().println("Wrong format");
+//        }
 
         try {
-            itemController.delete(id);
+            itemController.delete(itemDAO.convertStringIdToLong(req, resp));
         } catch (Exception e) {
             e.printStackTrace();
         }

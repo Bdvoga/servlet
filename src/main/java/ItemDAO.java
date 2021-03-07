@@ -4,11 +4,24 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 
 public class ItemDAO {
     SessionFactory sessionFactory;
     private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
+
+    public Long convertStringIdToLong (HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            return new Long(req.getParameter("id"));
+        } catch (NumberFormatException e) {
+            resp.getWriter().println("Wrong format");
+        }
+
+        return null;
+    }
 
     public Item update(Item item) {
         Transaction tr = null;
